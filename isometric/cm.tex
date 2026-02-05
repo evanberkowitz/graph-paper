@@ -1,0 +1,35 @@
+\graph[\SI{1}{\centi\meter} equilateral triangles]{
+	\def\spacing{1cm}
+	\def\width{16}
+	\def\height{20}
+	
+	% Clip to page boundaries (centered on origin)
+	\pgfmathsetmacro{\halfwidth}{\width/2}
+	\pgfmathsetmacro{\halfheight}{\height/2}
+	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
+	
+	% Horizontal lines (0°)
+	\foreach \i in {0,2,4,...,\height}{
+		\draw (0, \i*\spacing) coordinate (C\i) -- (\width cm, \i*\spacing) coordinate (R\i);
+		\draw (C\i) -- (-\width cm, \i*\spacing) coordinate (L\i);
+		\draw (0, -\i*\spacing) coordinate (C\i') -- (\width cm, -\i*\spacing) coordinate (R\i');
+		\draw (C\i') -- (-\width cm, -\i*\spacing) coordinate (L\i');
+
+		\draw (C\i) -- ++ (60:\width cm);
+		\draw (C\i) -- ++ (120:\width cm);
+		\draw (C\i) -- ++ (240:\width cm);
+		\draw (C\i) -- ++ (300:\width cm);
+		\draw (C\i') -- ++ (60:\width cm);
+		\draw (C\i') -- ++ (120:\width cm);
+		\draw (C\i') -- ++ (240:\width cm);
+		\draw (C\i') -- ++ (300:\width cm);
+
+		}
+	\foreach \i in {1,3,5,...,\height}{
+		\draw (0, \i*\spacing) coordinate (C\i) -- (\width cm, \i*\spacing) coordinate (R\i);
+		\draw (0, \i*\spacing) coordinate (C\i) -- (-\width cm, \i*\spacing) coordinate (L\i);
+		\draw (0, -\i*\spacing) coordinate (C\i) -- (\width cm, -\i*\spacing) coordinate (R\i);
+		\draw (0, -\i*\spacing) coordinate (C\i) -- (-\width cm, -\i*\spacing) coordinate (L\i);
+	}
+}
+
