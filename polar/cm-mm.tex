@@ -1,0 +1,36 @@
+\graph[Radii in mm and cm; Angles in 5\degrees and 15\degrees]{
+	\def\radius{7cm}
+
+	\coordinate (O) at (0,0);
+
+	\foreach \r in {1,2,...,6}{
+		\draw (O) circle (\r/7*\radius);
+		\foreach \f in {1,2,...,9}{
+			\draw[gray, very thin] (O) circle (\r/7*\radius+\f mm);
+		}
+	}
+	\draw (O) circle (\radius);
+
+	\draw (O) circle (\radius+5mm);
+	\draw (O) circle (\radius+7mm);
+	\draw (O) circle (\radius+9mm);
+	\draw (O) circle (\radius+10mm);
+
+	\foreach \a in {0,1,2,...,359}{
+		\draw (\a: \radius+10mm) -- (\a: \radius+9mm);
+	}
+	\foreach \a in {0,2,...,358}{
+		\draw (\a: \radius+9mm) -- (\a: \radius+7mm);
+	}
+	\foreach \a in {0,5,...,355}{
+		\draw (\a: \radius+7mm) -- (\a: \radius);
+	}
+	
+	\foreach \a in {0,5,...,355}{
+		\draw[gray, very thin] (\a: 1cm) -- (\a: \radius);
+	}
+	\foreach \a in {0,15,...,345}{
+		\draw (O) -- (\a: \radius);
+	}
+
+}
