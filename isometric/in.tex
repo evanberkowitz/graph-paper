@@ -1,6 +1,6 @@
-\graph[\SI{1}{\centi\meter} and $\frac{1}{2}\unit{\centi\meter}$ equilateral triangles]{
+\graph[1-inch and $\frac{1}{4}$-inch equilateral triangles]{
 	
-	\def\spacing{1cm}
+	\def\spacing{1in}
 	\def\width{16}
 	\def\height{20}
 	
@@ -23,12 +23,14 @@
 		}
 	}
 
-	\foreach \i in {-15,-14,...,15}{
-		\foreach \j in {-15,-14,...,15}{
-			\draw[gray, very thin] ($\i*(a) + 0.5*(a)+0.5*(b) + \j*(b)$) -- ++ (a);
-			\draw[gray, very thin] ($\i*(a) + 0.5*(a) + \j*(b)$) -- ++ (a);
-			\draw[gray, very thin] ($\i*(a) + 0.5*(a) + \j*(b)$) -- ++ (b);
-			\draw[gray, very thin] ($\i*(a) + 0.5*(a) + \j*(b)$) -- ++ ($(a) - (b)$);
+	\foreach \dx in {1,2,3}{
+		\foreach \i in {-8,-7,...,5}{
+			\foreach \j in {-8,-7,...,5}{
+				\draw[gray, very thin] ($\i*(a) + \dx/4*(a)+\dx/4*(b) + \j*(b)$) -- ++ (a);
+				\draw[gray, very thin] ($\i*(a) + \dx/4*(a) + \j*(b)$) -- ++ (a);
+				\draw[gray, very thin] ($\i*(a) + \dx/4*(a) + \j*(b)$) -- ++ (b);
+				\draw[gray, very thin] ($\i*(a) + \dx/4*(a) + \j*(b)$) -- ++ ($(a) - (b)$);
+			}
 		}
 	}
 
