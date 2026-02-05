@@ -26,14 +26,12 @@ trap "rm -f '$TMPFILE' '${TMPFILE%.tex}.pdf' '${TMPFILE%.tex}.aux' '${TMPFILE%.t
 # Determine document configuration
 DOC_CLASS="\\documentclass[]{exam}"
 MACROS="\\input{macros}"
-OPTIONS=""
-
-# Check if FINAL is set - if not, add git overlay
-if [ -z "$FINAL" ]; then
-    OLD=$(git rev-parse --short HEAD 2>/dev/null || echo HEAD)
-    NEW="--"
-    OPTIONS=$(./script/git.sh "$OLD" "$NEW" 2>/dev/null || echo "")
-fi
+OPTIONS="\\newcommand{\\descriptionSidebar}{
+    \\usepackage[ angle=90, color=black, opacity=1, scale=2, ]{background}
+    \\SetBgPosition{current page.west}
+    \\SetBgVshift{-4.5mm}
+    \\backgroundsetup{contents={\\description}}
+}"
 
 # Determine jobname from base filename (full path without .tex extension)
 # This must be set BEFORE we strip -solution for solution files
@@ -52,7 +50,26 @@ elif [[ "$BASE" == slide/* ]]; then
     # For slides, pass dvipsnames option to xcolor before beamer loads it
     # Then load slide/macros and regular macros.tex (slides need macros.tex for \class, etc.)
     DOC_CLASS="\\PassOptionsToPackage{dvipsnames}{xcolor}\\documentclass{beamer}\\input{slide/macros}"
+elif [[ "$BASE" == rectangular/* ]]; then
+    DOC_CLASS="\\documentclass{article}"
+    MACROS="\\usepackage[letterpaper,margin=0.5in]{geometry}\\input{macros}"
 fi
+
+# Check if FINAL is set - if not, add git overlay
+if [ -z "$FINAL" ]; then
+    OLD=$(git rev-parse --short HEAD 2>/dev/null || echo HEAD)
+    NEW="--"
+    OPTIONS=$(./script/git.sh "$OLD" "$NEW" 2>/dev/null || echo "")
+fi
+
+# Pass options to background package before it's loaded in macros.tex
+OPTIONS="\\PassOptionsToPackage{angle=90,color=black,opacity=1}{background}$OPTIONS"
+OPTIONS+="\\newcommand{\\descriptionSidebar}[1]{
+    \\SetBgPosition{current page.west}
+    \\SetBgVshift{-0.25in}
+    \\SetBgHshift{0mm}
+    \\backgroundsetup{contents={{\\small #1}}}
+}"
 
 # Add solution.tex for assignments, exams, quizzes, lab manuals
 # Check original BASE (before -solution stripping) to determine document type

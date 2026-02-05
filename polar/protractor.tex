@@ -1,0 +1,34 @@
+\graph[Protractor; Radii in mm and cm.]{
+	\def\radius{7cm}
+
+	\coordinate (O) at (0,0);
+
+	\draw (O) circle (\radius);
+
+	% These 4 circumferences let you measure 1mm, 2mm, 3mm, 4mm, 5mm, 6mm, 7mm, 9mm, 1cm.
+	\draw (O) circle (\radius-1mm);
+	\draw (O) circle (\radius-3mm);
+	\draw (O) circle (\radius-6mm);
+	\draw (O) circle (\radius-1cm);
+
+	\draw (O) circle (\radius-3cm);
+	\draw (O) circle (0.25in);
+
+	\foreach \a in {0,1,2,...,359}{
+		\draw (\a: \radius) -- ++ (\a: -1mm);
+	}
+	\foreach \a in {0,2,...,358}{
+		\draw (\a: \radius) -- ++ (\a: -3mm);
+	}
+		\foreach \a in {0,10,...,350}{
+		\draw (\a: \radius) -- ++ (\a: -1cm);
+		\node at (\a: \radius+.25in) {\a\degrees};
+	}
+	\foreach \a in {0,30,...,330}{
+		\draw (\a: \radius) -- ++ (\a: -3cm);
+	}
+
+	\foreach \a in {0,45,...,315}{
+		\draw (O) -- (\a: \radius);
+	}
+}
