@@ -1,0 +1,37 @@
+\graph[Semi-logarithmic; each dark square \SI{5}{\centi\meter} a side]{
+	% Logarithmic y-axis
+	% Scale: 5 cm per decade
+	\pgfmathsetmacro{\decadeheight}{5}
+	\pgfmathsetmacro{\verticaldecades}{4}
+	\pgfmathsetmacro{\linearwidth}{5}
+	\pgfmathsetmacro{\horizontalsets}{2}
+
+	% Calculate maximum values
+	\pgfmathsetmacro{\maxyval}{pow(10,\verticaldecades)}
+	\pgfmathsetmacro{\maxy}{ln(\maxyval)/ln(10)*\decadeheight}
+	\pgfmathsetmacro{\maxx}{(1+\horizontalsets)*\linearwidth}
+
+	% Drawing major divisions at powers of 10 (logarithmic y-axis)
+	\foreach \i in {0,1,...,\verticaldecades} {
+		\pgfmathsetmacro{\decade}{pow(10,\i)}
+		\pgfmathsetmacro{\ypos}{ln(\decade)/ln(10)*\decadeheight}
+		\draw (0,\ypos) -- (\maxx,\ypos);
+		% Drawing minor divisions within each decade (except the last)
+		\ifnum\i<\verticaldecades
+			\foreach \minor in {2,3,4,5,6,7,8,9} {
+				\pgfmathsetmacro{\ypos}{ln(\decade*\minor)/ln(10)*\decadeheight}
+				\draw[gray,very thin] (0,\ypos) -- (\maxx,\ypos);
+			}
+		\fi
+	}
+	% Linear x-axis: divisions at multiples of linearwidth
+	\foreach \i in {0,1,...,\horizontalsets} {
+		\pgfmathsetmacro{\xpos}{\i*\linearwidth}
+		\draw (\xpos*1cm,0) -- (\xpos*1cm,\maxy);
+        \foreach \minor in {1,2,...,9} {
+            \draw[gray,very thin] (\xpos*1cm + \minor*0.5cm,0) -- (\xpos*1cm + \minor*0.5cm,\maxy);
+        }
+	}
+    \draw (\maxx*1cm,0) -- (\maxx*1cm,\maxy);
+}
+

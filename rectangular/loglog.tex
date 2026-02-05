@@ -1,0 +1,43 @@
+\graph[Each decade 5 cm]{
+	% Both axes logarithmic
+	% Scale: 5 cm per decade for both axes
+	\pgfmathsetmacro{\decadeheight}{5}
+	\pgfmathsetmacro{\decadewidth}{5}
+
+	\pgfmathsetmacro{\horzontaldecades}{3}
+	\pgfmathsetmacro{\verticaldecades}{4}
+
+	% Calculate maximum values
+	\pgfmathsetmacro{\maxxval}{pow(10,\horzontaldecades)}
+	\pgfmathsetmacro{\maxyval}{pow(10,\verticaldecades)}
+	\pgfmathsetmacro{\maxx}{ln(\maxxval)/ln(10)*\decadewidth}
+	\pgfmathsetmacro{\maxy}{ln(\maxyval)/ln(10)*\decadeheight}
+
+	% Logarithmic x-axis: major divisions at powers of 10
+	\foreach \i in {0,1,...,\horzontaldecades} {
+		\pgfmathsetmacro{\decade}{pow(10,\i)}
+		\pgfmathsetmacro{\xpos}{ln(\decade)/ln(10)*\decadewidth}
+		\draw (\xpos,0) -- (\xpos,\maxy);
+		% Minor divisions within each decade (except the last)
+		\ifnum\i<\horzontaldecades
+			\foreach \minor in {2,3,4,5,6,7,8,9} {
+				\pgfmathsetmacro{\xposminor}{ln(\decade*\minor)/ln(10)*\decadewidth}
+				\draw[gray,very thin] (\xposminor,0) -- (\xposminor,\maxy);
+			}
+		\fi
+	}
+	% Logarithmic y-axis: major divisions at powers of 10
+	\foreach \i in {0,1,...,\verticaldecades} {
+		\pgfmathsetmacro{\decade}{pow(10,\i)}
+		\pgfmathsetmacro{\ypos}{ln(\decade)/ln(10)*\decadeheight}
+		\draw (0,\ypos) -- (\maxx,\ypos);
+		% Minor divisions within each decade (except the last)
+		\ifnum\i<\verticaldecades
+			\foreach \minor in {2,3,4,5,6,7,8,9} {
+				\pgfmathsetmacro{\yposminor}{ln(\decade*\minor)/ln(10)*\decadeheight}
+				\draw[gray,very thin] (0,\yposminor) -- (\maxx,\yposminor);
+			}
+		\fi
+	}
+}
+
