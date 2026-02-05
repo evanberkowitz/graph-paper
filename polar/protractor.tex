@@ -27,6 +27,7 @@
 		\node at (\a: \radius+.25in) {\a\degrees};
 		\pgfmathsetmacro{\b}{int(360-\a)}
 		\node at (\a: \radius-1.5cm) {\b\degrees};
+		\draw (\a: \radius-2cm) -- (\a: \radius-3cm);
 	}
 	\foreach \a in {0,30,...,330}{
 		\draw (\a: \radius-2cm) -- ++ (\a: -1cm);
