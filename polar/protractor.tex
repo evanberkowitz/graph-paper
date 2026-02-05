@@ -11,8 +11,10 @@
 	\draw (O) circle (\radius-6mm);
 	\draw (O) circle (\radius-1cm);
 
+	\draw (O) circle (\radius-2cm);
 	\draw (O) circle (\radius-3cm);
-	\draw (O) circle (0.25in);
+	\draw (O) circle (\radius-4cm);
+	\draw (O) circle (1cm);
 
 	\foreach \a in {0,1,2,...,359}{
 		\draw (\a: \radius) -- ++ (\a: -1mm);
@@ -20,15 +22,17 @@
 	\foreach \a in {0,2,...,358}{
 		\draw (\a: \radius) -- ++ (\a: -3mm);
 	}
-		\foreach \a in {0,10,...,350}{
+	\foreach \a in {0,10,...,350}{
 		\draw (\a: \radius) -- ++ (\a: -1cm);
 		\node at (\a: \radius+.25in) {\a\degrees};
+		\pgfmathsetmacro{\b}{int(360-\a)}
+		\node at (\a: \radius-1.5cm) {\b\degrees};
 	}
 	\foreach \a in {0,30,...,330}{
-		\draw (\a: \radius) -- ++ (\a: -3cm);
+		\draw (\a: \radius-2cm) -- ++ (\a: -1cm);
 	}
 
 	\foreach \a in {0,45,...,315}{
-		\draw (O) -- (\a: \radius);
+		\draw (O) -- (\a: 4cm);
 	}
 }
