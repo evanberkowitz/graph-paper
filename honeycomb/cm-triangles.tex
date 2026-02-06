@@ -1,0 +1,43 @@
+\graph[Honeycomb lattice with \SI{1}{\centi\meter} edge lengths and equilateral triangles]{
+	
+	\def\spacing{1cm}
+	\def\width{17}
+	\def\height{19.05255888} % 22 * sqrt(3)/2
+	
+	% Clip to page boundaries (centered on origin)
+	\pgfmathsetmacro{\halfwidth}{\width/2}
+	\pgfmathsetmacro{\halfheight}{\height/2}
+	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
+	
+	% For a regular hexagon with edge length a:
+	% - Circumradius R = a = 1cm
+	% - Horizontal spacing between hexagon centers = sqrt(3) * a
+	% - Vertical spacing between rows = 3/2 * a
+	\pgfmathsetmacro{\sqrtthree}{sqrt(3)}
+	\pgfmathsetmacro{\hexspacingx}{\sqrtthree * \spacing}
+	\pgfmathsetmacro{\hexspacingy}{1.5 * \spacing}
+
+    \coordinate (a) at (1.5*\spacing , \sqrtthree/2*\spacing);
+    \coordinate (b) at (1.5*\spacing , -\sqrtthree/2*\spacing);
+	
+    \foreach \i in {-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8}{
+        \foreach \j in {-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8}{
+            \coordinate (C) at ($\i*(a) + \j*(b)$);
+                    
+                % Draw hexagon with 1cm edges centered at (xpos, ypos)
+                % For a regular hexagon with edge length a, circumradius R = a = 1cm
+                % Using pointy-top orientation (typical for honeycombs)
+            \draw ($(C) + (0:\spacing)$)
+            -- ($(C) + (60 :\spacing)$)
+            -- ($(C) + (120:\spacing)$)
+            -- ($(C) + (180:\spacing)$)
+            -- ($(C) + (240:\spacing)$)
+            -- ($(C) + (300:\spacing)$)
+            -- cycle;
+            \foreach \a in {0,60,120,180,240,300}{
+                \draw[gray, very thin] (C) -- ++ (\a:\spacing);
+            }
+        }
+    }
+}
+
