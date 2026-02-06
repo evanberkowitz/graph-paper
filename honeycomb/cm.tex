@@ -9,14 +9,7 @@
 	\pgfmathsetmacro{\halfheight}{\height/2}
 	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
 	
-	% For a regular hexagon with edge length a:
-	% - Circumradius R = a = 1cm
-	% - Horizontal spacing between hexagon centers = sqrt(3) * a
-	% - Vertical spacing between rows = 3/2 * a
 	\pgfmathsetmacro{\sqrtthree}{sqrt(3)}
-	\pgfmathsetmacro{\hexspacingx}{\sqrtthree * \spacing}
-	\pgfmathsetmacro{\hexspacingy}{1.5 * \spacing}
-
     \coordinate (a) at (1.5*\spacing , \sqrtthree/2*\spacing);
     \coordinate (b) at (1.5*\spacing , -\sqrtthree/2*\spacing);
 	
