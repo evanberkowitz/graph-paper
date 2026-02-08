@@ -1,0 +1,27 @@
+\graph[Point dipole coordinates; dark iso-$\mu$s and -$\nu$s every $1.0$.]{
+    \def\a{1}  % Scale factor
+	\def\width{17}
+	\def\height{24}
+	
+	% Clip to page boundaries (centered on origin)
+	\pgfmathsetmacro{\halfwidth}{\width/2}
+	\pgfmathsetmacro{\halfheight}{\height/2}
+	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
+	
+	\begin{scope}[rotate=0]
+		% Draw main coordinate lines
+		\draw[black, line width=0.5pt] (-\halfwidth cm, 0) -- (\halfwidth cm, 0);
+		\draw[black, line width=0.5pt] (0, -\halfheight cm) -- (0, \halfheight cm);
+  
+        \foreach \r in {-10,-9.8,...,10}{
+            \draw[gray, very thin] (\r, 0) circle (\r);
+            \draw[gray, very thin] (0, \r) circle (\r);
+        }
+         \foreach \r in {-10,-9,...,10}{
+            \draw[black, line width=0.5pt] (\r, 0) circle (\r);
+            \draw[black, line width=0.5pt] (0, \r) circle (\r);
+        }
+			
+	\end{scope}
+}
+
