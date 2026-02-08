@@ -44,4 +44,13 @@ clean: tidy
 
 distclean: clean
 	$(RM) -r */*.pdf
+	$(RM) graph-paper.zip graph-paper.tar.gz
 	latexmk -C 2>/dev/null || true
+
+.PHONY: graph-paper.zip graph-paper.tar.gz
+graph-paper.zip: all
+	find . -name '*.pdf' -type f | zip -@ graph-paper.zip
+
+graph-paper.tar.gz: all
+	find . -name '*.pdf' -type f | tar -czf graph-paper.tar.gz -T -
+

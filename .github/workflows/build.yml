@@ -1,0 +1,63 @@
+name: Build PDFs
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [ published, created ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install LaTeX and tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-pictures texlive-science latexmk zip tar
+    
+    - name: Build PDFs and create archive
+      env:
+        VERBOSE: 1
+      run: make graph-paper.zip graph-paper.tar.gz
+    
+    - name: Show LaTeX error logs
+      if: failure()
+      run: |
+        echo "=== LaTeX Error Logs ==="
+        find . -name '*.log' -type f | while read logfile; do
+          echo "--- $logfile ---"
+          tail -100 "$logfile" || cat "$logfile"
+          echo ""
+        done
+    
+    - name: Upload LaTeX logs
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: latex-logs
+        path: |
+          **/*.log
+          **/*.aux
+        retention-days: 7
+    
+    - name: Upload PDF archive as artifact
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: graph-paper
+        path: graph-paper.tar.gz
+    
+    - name: Upload PDF archive to release
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: graph-paper.zip graph-paper.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
