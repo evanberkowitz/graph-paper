@@ -1,6 +1,7 @@
 ## Output documents
 *.pdf
-assignment/*-template.tex
+*.tar.gz
+*.zip
 *Notes.bib
 
 ## A place to put possibly-private student information.

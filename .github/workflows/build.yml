@@ -16,15 +16,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Install LaTeX
+    - name: Install LaTeX and tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-pictures texlive-science latexmk
+        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-pictures texlive-science latexmk zip tar
     
-    - name: Build all PDFs
+    - name: Build PDFs and create archive
       env:
         VERBOSE: 1
-      run: make all
+      run: make graph-paper.zip graph-paper.tar.gz
     
     - name: Show LaTeX error logs
       if: failure()
@@ -46,22 +46,18 @@ jobs:
           **/*.aux
         retention-days: 7
     
-    - name: Create archive of all PDFs
-      if: success()
-      run: |
-        find . -name '*.pdf' -type f | tar -czf graph-paper.tar.gz -T -
-    
     - name: Upload PDF archive as artifact
+      if: success()
       uses: actions/upload-artifact@v4
       with:
-        name: graph-paper-pdfs
+        name: graph-paper
         path: graph-paper.tar.gz
     
     - name: Upload PDF archive to release
       if: github.event_name == 'release'
       uses: softprops/action-gh-release@v1
       with:
-        files: graph-paper.tar.gz
+        files: graph-paper.zip graph-paper.tar.gz
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
