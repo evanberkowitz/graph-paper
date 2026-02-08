@@ -1,0 +1,44 @@
+name: Build PDFs
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [ published, created ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install LaTeX
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-pictures
+    
+    - name: Build all PDFs
+      run: make all
+    
+    - name: Create archive of all PDFs
+      run: |
+        find . -name '*.pdf' -type f | tar -czf graph-paper.tar.gz -T -
+    
+    - name: Upload PDF archive as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: graph-paper-pdfs
+        path: graph-paper.tar.gz
+    
+    - name: Upload PDF archive to release
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: graph-paper.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
