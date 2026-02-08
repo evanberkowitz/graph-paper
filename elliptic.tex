@@ -1,0 +1,64 @@
+\graph[Elliptic coordinates with foci at $\pm \SI{3}{\centi\meter}$.\\  Dark iso-$\mu$s every $0.5$; Dark iso-$\nu$s every $30\degrees$.]{
+	\def\a{3}  % Half-distance between foci in cm (numeric value)
+	\def\width{17}
+	\def\height{24}
+	
+	% Clip to page boundaries (centered on origin)
+	\pgfmathsetmacro{\halfwidth}{\width/2}
+	\pgfmathsetmacro{\halfheight}{\height/2}
+	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
+	
+	% Rotate entire coordinate system by 90 degrees
+	\begin{scope}[rotate=90]
+		% Draw main coordinate lines
+		\draw[black, line width=0.5pt] (-\halfwidth cm, 0) -- (\halfwidth cm, 0);
+		\draw[black, line width=0.5pt] (0, -\halfheight cm) -- (0, \halfheight cm);
+		
+		% Function to draw iso-μ curve (constant μ, varying ν) - ellipses
+		% x = a cosh(μ) cos(ν), y = a sinh(μ) sin(ν)
+		\newcommand{\drawIsoMu}[2]{
+			\pgfmathsetmacro{\mu}{#1}
+			\pgfmathsetmacro{\coshmu}{cosh(\mu)}
+			\pgfmathsetmacro{\sinhmu}{sinh(\mu)}
+			\draw[#2, domain=0:360, samples=200, smooth] plot ({\a*\coshmu*cos(\x)}, {\a*\sinhmu*sin(\x)});
+		}
+		
+		% Function to draw iso-ν curve (constant ν, varying μ) - hyperbolas
+		% x = a cosh(μ) cos(ν), y = a sinh(μ) sin(ν)
+		% Each hyperbola has two branches, handled by varying μ from 0 to 3
+		\newcommand{\drawIsoNu}[2]{
+			\pgfmathsetmacro{\nu}{#1}
+			\pgfmathsetmacro{\cosnu}{cos(\nu)}
+			\pgfmathsetmacro{\sinnu}{sin(\nu)}
+			% Main branch
+			\draw[#2, domain=0:3, samples=200, smooth] plot ({\a*cosh(\x)*\cosnu}, {\a*sinh(\x)*\sinnu});
+			% Other branch (symmetric)
+			\draw[#2, domain=0:3, samples=200, smooth] plot ({-\a*cosh(\x)*\cosnu}, {-\a*sinh(\x)*\sinnu});
+		}
+		
+		% Constant μ curves (ellipses)
+		% For each μ, plot as ν varies from 0 to 360
+		\foreach \m in {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3.0}{
+			\drawIsoMu{\m}{gray, very thin}
+		}
+		% Prominent μ curves
+		\foreach \m in {0.5,1.0,1.5,2.0,2.5,3.0}{
+			\drawIsoMu{\m}{black, line width=0.3pt}
+		}
+			
+		% Constant ν curves (hyperbolas)
+		% For each ν, plot as μ varies from 0 to 3
+		\foreach \n in {0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350}{
+			\drawIsoNu{\n}{gray, very thin}
+		}
+		% Prominent ν curves
+		\foreach \n in {0,30,60,90,120,150,180,210,240,270,300,330}{
+			\drawIsoNu{\n}{black, line width=0.3pt}
+		}
+		% Draw foci
+		\draw[black, fill=black] (-\a cm, 0) circle (2pt);
+		\draw[black, fill=black] (\a cm, 0) circle (2pt);
+		
+	\end{scope}
+}
+
