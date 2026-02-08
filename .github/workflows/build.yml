@@ -19,7 +19,7 @@ jobs:
     - name: Install LaTeX
       run: |
         sudo apt-get update
-        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-pictures latexmk
+        sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-pictures texlive-science latexmk
     
     - name: Build all PDFs
       env:
