@@ -1,0 +1,52 @@
+\graph[Parabolic coordinates; dark iso-$\mu$s and -$\nu$s every $1.0$.]{
+	\def\width{17}
+	\def\height{24}
+	
+	% Clip to page boundaries (centered on origin)
+	\pgfmathsetmacro{\halfwidth}{\width/2}
+	\pgfmathsetmacro{\halfheight}{\height/2}
+	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
+	
+	\begin{scope}[rotate=0]
+		% Draw main coordinate lines
+		\draw[black, line width=0.5pt] (-\halfwidth cm, 0) -- (\halfwidth cm, 0);
+		\draw[black, line width=0.5pt] (0, -\halfheight cm) -- (0, \halfheight cm);
+		
+		% Function to draw iso-μ curve (constant μ, varying ν) - parabolas
+		% x = (μ² - ν²)/2, y = μν
+		\newcommand{\drawIsoMu}[2]{
+			\pgfmathsetmacro{\mu}{#1}
+			\pgfmathsetmacro{\musq}{\mu*\mu}
+			\draw[#2, domain=-10:10, samples=200, smooth] plot ({(\musq - \x*\x)/2}, {\mu*\x});
+		}
+		
+		% Function to draw iso-ν curve (constant ν, varying μ) - parabolas
+		% x = (μ² - ν²)/2, y = μν
+		\newcommand{\drawIsoNu}[2]{
+			\pgfmathsetmacro{\nu}{#1}
+			\pgfmathsetmacro{\nusq}{\nu*\nu}
+			\draw[#2, domain=-10:10, samples=200, smooth] plot ({(\x*\x - \nusq)/2}, {\x*\nu});
+		}
+		
+		% Constant μ curves (parabolas)
+		% For each μ, plot as ν varies
+		\foreach \m in {-6.0,-5.8,...,6.0}{
+			\drawIsoMu{\m}{gray, very thin}
+		}
+		% Prominent μ curves
+		\foreach \m in {-6.0,-5.0,...,6.0}{
+			\drawIsoMu{\m}{black, line width=0.3pt}
+		}
+			
+		% Constant ν curves (parabolas)
+		% For each ν, plot as μ varies
+		\foreach \n in {-6.0,-5.8,...,6.0}{
+			\drawIsoNu{\n}{gray, very thin}
+		}
+		% Prominent ν curves
+		\foreach \n in {-6.0,-5.0,...,6.0}{
+			\drawIsoNu{\n}{black, line width=0.3pt}
+		}
+	\end{scope}
+}
+
