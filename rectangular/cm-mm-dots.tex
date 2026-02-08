@@ -1,0 +1,21 @@
+\graph[\SI{1}{\centi\meter} / \SI{1}{\milli\meter}]{
+	
+	% Define dot patterns
+	\pgfdeclarepatternformonly{dots 1mm}{\pgfqpoint{0mm}{0mm}}{\pgfqpoint{1mm}{1mm}}{\pgfqpoint{1mm}{1mm}}{
+		\pgfpathcircle{\pgfqpoint{0.5mm}{0.5mm}}{0.5pt}
+		\pgfsetcolor{gray}
+		\pgfsetfillcolor{gray}
+		\pgfusepath{fill}
+	}
+	\pgfdeclarepatternformonly{dots 1cm}{\pgfqpoint{0mm}{0mm}}{\pgfqpoint{1cm}{1cm}}{\pgfqpoint{1cm}{1cm}}{
+		\pgfpathcircle{\pgfqpoint{0.5mm}{0.5mm}}{1pt}
+		\pgfsetcolor{black}
+		\pgfsetfillcolor{black}
+		\pgfusepath{fill}
+	}
+		
+	% Fill area with dot pattern
+	\fill[pattern=dots 1mm, pattern color=gray] (0,0) rectangle (17cm,24cm);
+	\fill[pattern=dots 1cm, pattern color=black] (0,0) rectangle (17cm,24cm);
+	
+}

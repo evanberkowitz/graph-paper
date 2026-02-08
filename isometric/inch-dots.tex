@@ -1,0 +1,34 @@
+\graph[1-inch and $\frac{1}{4}$-inch equilateral triangles]{
+	
+	\def\spacing{1in}
+	\def\width{16}
+	\def\height{20}
+	
+	% Clip to page boundaries (centered on origin)
+	\pgfmathsetmacro{\halfwidth}{\width/2}
+	\pgfmathsetmacro{\halfheight}{\height/2}
+	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
+	
+	
+	% Define lattice vectors \a and \b
+	\pgfmathsetmacro{\sqrtthreeover}{sqrt(3)/2}
+	\coordinate (a) at (1 * \spacing, 0cm);
+	\coordinate (b) at (0.5 * \spacing, \sqrtthreeover * \spacing);
+	
+	\foreach \di in {0,1,2,3}{
+	\foreach \dj in {0,1,2,3}{
+		\foreach \i in {-8,-7,...,5}{
+			\foreach \j in {-8,-7,...,5}{
+				\draw[gray, fill=gray] ($\i*(a) + \j*(b) + \di/4*(a) + \dj/4*(b)$) circle (0.5pt);
+			}
+		}
+	}}
+	\foreach \i in {-15,-14,...,15}{
+		\foreach \j in {-15,-14,...,15}{
+			\draw[black,fill=black] ($\i*(a) + \j*(b)$) circle (1pt);
+		}
+	}
+
+
+}
+

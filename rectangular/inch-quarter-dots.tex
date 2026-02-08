@@ -1,0 +1,12 @@
+\graph[1-inch / $1/4$-inch]{
+	\foreach \x in {0,...,28}{
+		\foreach \y in {0,...,36}{
+			\draw[gray, fill=gray] (\x*0.25in,\y*0.25in) circle (0.5pt);
+		}
+	}
+	\foreach \x in {0,...,7}{
+		\foreach \y in {0,1,...,9}{
+			\draw[black, fill=black] (\x*1in,\y*1in) circle (1pt);
+		}
+	}
+}

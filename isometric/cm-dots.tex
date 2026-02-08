@@ -1,0 +1,29 @@
+\graph[\SI{1}{\centi\meter} and $\frac{1}{2}\unit{\centi\meter}$ equilateral triangles]{
+	
+	\def\spacing{1cm}
+	\def\width{16}
+	\def\height{20}
+	
+	% Clip to page boundaries (centered on origin)
+	\pgfmathsetmacro{\halfwidth}{\width/2}
+	\pgfmathsetmacro{\halfheight}{\height/2}
+	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
+	
+	
+	% Define lattice vectors \a and \b
+	\pgfmathsetmacro{\sqrtthreeover}{sqrt(3)/2}
+	\coordinate (a) at (1 * \spacing, 0cm);
+	\coordinate (b) at (0.5 * \spacing, \sqrtthreeover * \spacing);
+	
+	\foreach \i in {-15,-14,...,15}{
+		\foreach \j in {-15,-14,...,15}{
+			\draw[black,fill=black] ($\i*(a) + \j*(b)$) circle (1pt);
+			\draw[gray,fill=gray] ($\i*(a) + \j*(b) + 0.5*(a)$) circle (0.5pt);
+			\draw[gray,fill=gray] ($\i*(a) + \j*(b) + 0.5*(b)$) circle (0.5pt);
+			\draw[gray,fill=gray] ($\i*(a) + \j*(b) + 0.5*(a) + 0.5*(b)$) circle (0.5pt);
+		}
+	}
+
+
+}
+
