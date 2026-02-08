@@ -56,7 +56,7 @@ OPTIONS+="\\newcommand{\\descriptionSidebar}[1]{
     \\SetBgPosition{current page.west}
     \\SetBgVshift{-0.25in}
     \\SetBgHshift{0mm}
-    \\backgroundsetup{contents={{\\small #1}}}
+    \\backgroundsetup{contents={\\small \\shortstack[l]{#1}}}
 }"
 
 # Add solution.tex for assignments, exams, quizzes, lab manuals

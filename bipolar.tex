@@ -1,0 +1,57 @@
+\graph[Bipolar coordinates with foci at $x=\pm \SI{2}{\centi\meter}$.\\  Dark iso-$\sigma$s every 50; Dark iso-$\tau$s every $0.5$.]{
+	\def\a{2}  % Half-distance between foci in cm (numeric value)
+	\def\width{17}
+	\def\height{24}
+	
+	% Clip to page boundaries (centered on origin)
+	\pgfmathsetmacro{\halfwidth}{\width/2}
+	\pgfmathsetmacro{\halfheight}{\height/2}
+	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
+	
+	% Draw foci
+	\draw[black, fill=black] (-\a cm, 0) circle (2pt);
+	\draw[black, fill=black] (\a cm, 0) circle (2pt);
+	
+	% Draw main coordinate lines
+	\draw[black, line width=0.5pt] (-\halfwidth cm, 0) -- (\halfwidth cm, 0);
+	\draw[black, line width=0.5pt] (0, -\halfheight cm) -- (0, \halfheight cm);
+	
+	% Function to draw iso-σ curve (constant σ, varying τ)
+	% x = a sinh(τ)/(cosh(τ) - cos(σ)), y = a sin(σ)/(cosh(τ) - cos(σ))
+	\newcommand{\drawIsoSigma}[2]{
+		\pgfmathsetmacro{\sigma}{#1}
+		\pgfmathsetmacro{\cossigma}{cos(\sigma)}
+		\pgfmathsetmacro{\sinsigma}{sin(\sigma)}
+		\draw[#2, domain=-3:3, samples=200, smooth] plot ({\a*(exp(\x) - exp(-\x))/2/((exp(\x) + exp(-\x))/2 - \cossigma)}, {\a*\sinsigma/((exp(\x) + exp(-\x))/2 - \cossigma)});
+	}
+	
+	% Function to draw iso-τ curve (constant τ, varying σ)
+	\newcommand{\drawIsoTau}[2]{
+		\pgfmathsetmacro{\tau}{#1}
+		\pgfmathsetmacro{\exptau}{exp(\tau)}
+		\pgfmathsetmacro{\expnegtau}{exp(-\tau)}
+		\pgfmathsetmacro{\sinhtau}{(\exptau - \expnegtau)/2}
+		\pgfmathsetmacro{\coshtau}{(\exptau + \expnegtau)/2}
+		\draw[#2, domain=-180:180, samples=200, smooth] plot ({\a*\sinhtau/(\coshtau - cos(\x))}, {\a*sin(\x)/(\coshtau - cos(\x))});
+	}
+	
+	% Constant σ curves using parametric form
+	% For each σ, plot as τ varies
+	\foreach \s in {-150,-140,-130,-120,-110,-100,-90,-80,-70,-60,-50,-40,-30,-20,-10,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150}{
+		\drawIsoSigma{\s}{gray, very thin}
+	}
+	% Prominent σ curves
+	\foreach \s in {-150,-100,...,150}{
+		\drawIsoSigma{\s}{black, line width=0.3pt}
+	}
+		
+	% Constant τ curves using parametric form
+	% For each τ, plot as σ varies
+	\foreach \t in {-2.5,-2.4,-2.3,-2.2,-2.1,-2.0,-1.9,-1.8,-1.7,-1.6,-1.5,-1.4,-1.3,-1.2,-1.1,-1.0,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5}{
+		\drawIsoTau{\t}{gray, very thin}
+	}
+	% Prominent τ curves
+	\foreach \t in {-2.5,-2.0,...,2.5}{
+		\drawIsoTau{\t}{black, line width=0.3pt}
+	}
+}
