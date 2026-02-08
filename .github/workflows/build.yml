@@ -22,9 +22,32 @@ jobs:
         sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-pictures latexmk
     
     - name: Build all PDFs
+      env:
+        VERBOSE: 1
       run: make all
     
+    - name: Show LaTeX error logs
+      if: failure()
+      run: |
+        echo "=== LaTeX Error Logs ==="
+        find . -name '*.log' -type f | while read logfile; do
+          echo "--- $logfile ---"
+          tail -100 "$logfile" || cat "$logfile"
+          echo ""
+        done
+    
+    - name: Upload LaTeX logs
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: latex-logs
+        path: |
+          **/*.log
+          **/*.aux
+        retention-days: 7
+    
     - name: Create archive of all PDFs
+      if: success()
       run: |
         find . -name '*.pdf' -type f | tar -czf graph-paper.tar.gz -T -
     
