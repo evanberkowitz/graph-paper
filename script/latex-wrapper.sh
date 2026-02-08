@@ -40,20 +40,8 @@ JOBNAME="${BASE%.tex}"
 # Store original BASE to check document type before stripping
 ORIGINAL_BASE="$BASE"
 
-# Determine document type based on base filename
-if [[ "$BASE" == *"-solution.tex" ]]; then
-    DOC_CLASS="\\documentclass[answers]{exam}"
-    BASE="${BASE%-solution.tex}.tex"
-elif [[ "$BASE" == note/* ]]; then
-    DOC_CLASS="\\documentclass[aps,superscriptaddress,tightenlines,nofootinbib,floatfix,longbibliography,notitlepage]{revtex4-1}"
-elif [[ "$BASE" == slide/* ]]; then
-    # For slides, pass dvipsnames option to xcolor before beamer loads it
-    # Then load slide/macros and regular macros.tex (slides need macros.tex for \class, etc.)
-    DOC_CLASS="\\PassOptionsToPackage{dvipsnames}{xcolor}\\documentclass{beamer}\\input{slide/macros}"
-elif [[ "$BASE" == rectangular/* ]]; then
-    DOC_CLASS="\\documentclass{article}"
-    MACROS="\\usepackage[letterpaper,margin=0.5in]{geometry}\\input{macros}"
-fi
+DOC_CLASS="\\documentclass{article}"
+MACROS="\\usepackage[letterpaper,margin=0.5in]{geometry}\\input{macros}"
 
 # Check if FINAL is set - if not, add git overlay
 if [ -z "$FINAL" ]; then

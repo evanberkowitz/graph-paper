@@ -20,7 +20,7 @@ ifdef INTERACTIVE
     VERBOSE = 1
 endif
 
-ALL=$(shell find . -name '*.tex')
+ALL=$(shell find . -name '*.tex' ! -name 'macros.tex')
 all: $(ALL:.tex=.pdf)
 
 # Main PDF targets - latexmk handles dependencies automatically
