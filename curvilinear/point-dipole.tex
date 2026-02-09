@@ -1,0 +1,41 @@
+\graph[Point dipole coordinates; radii powers of $2^{-5}$]{
+    \def\a{1}  % Scale factor
+	\def\width{17}
+	\def\height{24}
+	
+	% Clip to page boundaries (centered on origin)
+	\pgfmathsetmacro{\halfwidth}{\width/2}
+	\pgfmathsetmacro{\halfheight}{\height/2}
+	\clip (-\halfwidth cm, -\halfheight cm) rectangle ++ (\width cm, \height cm);
+	
+	\begin{scope}[rotate=0]
+		% Draw main coordinate lines
+		\draw[black, line width=0.5pt] (-\halfwidth cm, 0) -- (\halfwidth cm, 0);
+		\draw[black, line width=0.5pt] (0, -\halfheight cm) -- (0, \halfheight cm);
+  
+        \foreach \k in {-20,-19,...,30}{
+            \pgfmathsetmacro{\r}{4^(\k/10)}
+
+            \pgfmathparse{int(mod(\k,5))==0}
+            \ifnum\pgfmathresult=1
+            \else
+                \draw[gray, very thin] (\r, 0) circle (\r);
+                \draw[gray, very thin] (-\r, 0) circle (\r);
+                \draw[gray, very thin] (0, \r) circle (\r);
+                \draw[gray, very thin] (0, -\r) circle (\r);
+            \fi
+        }
+        \foreach \k in {-20,-19,...,30}{
+            \pgfmathsetmacro{\r}{4^(\k/10)}
+            \pgfmathparse{int(mod(\k,5))==0}
+            \ifnum\pgfmathresult=1
+                \draw[black] (\r, 0) circle (\r);
+                \draw[black] (-\r, 0) circle (\r);
+                \draw[black] (0, \r) circle (\r);
+                \draw[black] (0, -\r) circle (\r);
+            \fi
+        }
+				
+	\end{scope}
+}
+

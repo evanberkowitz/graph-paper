@@ -47,6 +47,10 @@ distclean: clean
 	$(RM) graph-paper.zip graph-paper.tar.gz
 	latexmk -C 2>/dev/null || true
 
+.PHONY: all.pdf
+all.pdf: $(ALL:.tex=.pdf)
+	pdftk $(ALL:.tex=.pdf) output all.pdf
+
 .PHONY: graph-paper.zip graph-paper.tar.gz
 graph-paper.zip: all
 	find . -name '*.pdf' -type f | zip -@ graph-paper.zip
