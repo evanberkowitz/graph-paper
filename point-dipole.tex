@@ -1,4 +1,4 @@
-\graph[Point dipole coordinates; dark iso-$\mu$s and -$\nu$s every $1.0$.]{
+\graph[Point dipole coordinates; radii powers of $2^{-5}$]{
     \def\a{1}  % Scale factor
 	\def\width{17}
 	\def\height{24}
@@ -13,15 +13,29 @@
 		\draw[black, line width=0.5pt] (-\halfwidth cm, 0) -- (\halfwidth cm, 0);
 		\draw[black, line width=0.5pt] (0, -\halfheight cm) -- (0, \halfheight cm);
   
-        \foreach \r in {-10,-9.8,...,10}{
-            \draw[gray, very thin] (\r, 0) circle (\r);
-            \draw[gray, very thin] (0, \r) circle (\r);
+        \foreach \k in {-20,-19,...,30}{
+            \pgfmathsetmacro{\r}{4^(\k/10)}
+
+            \pgfmathparse{int(mod(\k,5))==0}
+            \ifnum\pgfmathresult=1
+            \else
+                \draw[gray, very thin] (\r, 0) circle (\r);
+                \draw[gray, very thin] (-\r, 0) circle (\r);
+                \draw[gray, very thin] (0, \r) circle (\r);
+                \draw[gray, very thin] (0, -\r) circle (\r);
+            \fi
         }
-         \foreach \r in {-10,-9,...,10}{
-            \draw[black, line width=0.5pt] (\r, 0) circle (\r);
-            \draw[black, line width=0.5pt] (0, \r) circle (\r);
+        \foreach \k in {-20,-19,...,30}{
+            \pgfmathsetmacro{\r}{4^(\k/10)}
+            \pgfmathparse{int(mod(\k,5))==0}
+            \ifnum\pgfmathresult=1
+                \draw[black] (\r, 0) circle (\r);
+                \draw[black] (-\r, 0) circle (\r);
+                \draw[black] (0, \r) circle (\r);
+                \draw[black] (0, -\r) circle (\r);
+            \fi
         }
-			
+				
 	\end{scope}
 }
 
